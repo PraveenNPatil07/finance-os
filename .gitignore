@@ -1,0 +1,29 @@
+# Backend
+backend/target/
+backend/*.class
+backend/*.jar
+backend/*.war
+backend/.env
+backend/*.iml
+backend/.idea/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+finance-frontend/node_modules/
+finance-frontend/dist/
+finance-frontend/.env
+finance-frontend/.env.local
+finance-frontend/.env.production
+
+# Common
+.DS_Store
+*.log
+.vscode/
+.idea/
+*.swp
+*.swo
+Thumbs.db

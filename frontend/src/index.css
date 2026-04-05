@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg: #0f0f12;
+    --color-surface: #16161a;
+    --color-surface-2: #1c1c21;
+    --color-border: #2a2a35;
+    --color-border-hover: #3d3d4d;
+    --color-brand: #7c3aed;
+    --color-brand-light: #8b5cf6;
+    --color-brand-dim: #7c3aed1a;
+    --color-income: #10b981;
+    --color-income-dim: #10b98115;
+    --color-expense: #f43f5e;
+    --color-expense-dim: #f43f5e15;
+    --color-warning: #f59e0b;
+    --color-info: #3b82f6;
+    --color-text-primary: #f8f8ff;
+    --color-text-secondary: #a1a1b5;
+    --color-text-muted: #6b6b80;
+  }
+
+  body {
+    @apply text-primary font-sans antialiased;
+    background-color: var(--color-bg);
+  }
+}
+
+@layer utilities {
+  .bg-brand-gradient {
+    background: linear-gradient(135deg, var(--color-brand), #4f46e5);
+  }
+  .text-brand-gradient {
+    background: linear-gradient(135deg, var(--color-brand), #4f46e5);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .bg-income-gradient {
+    background: linear-gradient(135deg, var(--color-income), #059669);
+  }
+  .bg-expense-gradient {
+    background: linear-gradient(135deg, var(--color-expense), #e11d48);
+  }
+  .bg-card-shimmer {
+    background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-2) 100%);
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-border-hover);
+  }
+}
