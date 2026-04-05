@@ -27,7 +27,7 @@ export default function TransactionDetailPage() {
   const fetchTransactionDetails = async () => {
     try {
       setIsLoading(true);
-      const res = await transactionApi.getTransactionById(id);
+      const res = await transactionApi.getById(id);
       setTransaction(res);
     } catch (error) {
       toast.error('Transaction not found or unauthorized');
@@ -53,7 +53,7 @@ export default function TransactionDetailPage() {
     
     try {
       setIsLoading(true);
-      await transactionApi.deleteTransaction(id);
+      await transactionApi.delete(id);
       toast.success('Transaction deleted successfully');
       navigate('/transactions');
     } catch (error) {
@@ -104,7 +104,7 @@ export default function TransactionDetailPage() {
                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-8 mb-8">
                  <div>
                    <h4 className="text-xs font-semibold uppercase tracking-widest text-muted mb-1">Created By</h4>
-                   <p className="text-sm font-medium text-primary">{transaction.user?.username || 'System'}</p>
+                    <p className="text-sm font-medium text-primary">{transaction.createdByUsername || 'System'}</p>
                  </div>
                  <div>
                    <h4 className="text-xs font-semibold uppercase tracking-widest text-muted mb-1">Date Logged</h4>
