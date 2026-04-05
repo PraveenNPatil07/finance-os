@@ -39,14 +39,24 @@ public class DashboardService {
 
         // Current month calculations
         LocalDate now = LocalDate.now();
-        LocalDate monthStart = now.withDayOfMonth(1);
-        LocalDate monthEnd = now.withDayOfMonth(now.lengthOfMonth());
+        LocalDate thisMonthStart = now.withDayOfMonth(1);
+        LocalDate thisMonthEnd = now.withDayOfMonth(now.lengthOfMonth());
 
         BigDecimal thisMonthIncome = transactionRepository
-                .sumAmountByTypeAndDateBetween(TransactionType.INCOME, monthStart, monthEnd);
+                .sumAmountByTypeAndDateBetween(TransactionType.INCOME, thisMonthStart, thisMonthEnd);
         BigDecimal thisMonthExpenses = transactionRepository
-                .sumAmountByTypeAndDateBetween(TransactionType.EXPENSE, monthStart, monthEnd);
+                .sumAmountByTypeAndDateBetween(TransactionType.EXPENSE, thisMonthStart, thisMonthEnd);
         BigDecimal thisMonthNet = thisMonthIncome.subtract(thisMonthExpenses);
+
+        // Previous month calculations (for trends)
+        LocalDate lastMonthStart = now.minusMonths(1).withDayOfMonth(1);
+        LocalDate lastMonthEnd = now.minusMonths(1).withDayOfMonth(now.minusMonths(1).lengthOfMonth());
+
+        BigDecimal lastMonthIncome = transactionRepository
+                .sumAmountByTypeAndDateBetween(TransactionType.INCOME, lastMonthStart, lastMonthEnd);
+        BigDecimal lastMonthExpenses = transactionRepository
+                .sumAmountByTypeAndDateBetween(TransactionType.EXPENSE, lastMonthStart, lastMonthEnd);
+        BigDecimal lastMonthNet = lastMonthIncome.subtract(lastMonthExpenses);
 
         return DashboardSummaryResponse.builder()
                 .totalIncome(totalIncome)
@@ -56,7 +66,20 @@ public class DashboardService {
                 .thisMonthIncome(thisMonthIncome)
                 .thisMonthExpenses(thisMonthExpenses)
                 .thisMonthNet(thisMonthNet)
+                .incomeTrend(calculateTrend(lastMonthIncome, thisMonthIncome))
+                .expenseTrend(calculateTrend(lastMonthExpenses, thisMonthExpenses))
+                .balanceTrend(calculateTrend(lastMonthNet, thisMonthNet))
                 .build();
+    }
+
+    private Double calculateTrend(BigDecimal previous, BigDecimal current) {
+        if (previous == null || previous.compareTo(BigDecimal.ZERO) == 0) {
+            return current.compareTo(BigDecimal.ZERO) > 0 ? 100.0 : 0.0;
+        }
+        return current.subtract(previous)
+                .divide(previous, 4, RoundingMode.HALF_UP)
+                .multiply(BigDecimal.valueOf(100))
+                .doubleValue();
     }
 
     /**

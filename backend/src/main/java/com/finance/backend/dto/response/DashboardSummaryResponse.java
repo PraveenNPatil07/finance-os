@@ -23,4 +23,9 @@ public class DashboardSummaryResponse {
     private BigDecimal thisMonthIncome;
     private BigDecimal thisMonthExpenses;
     private BigDecimal thisMonthNet;
+    
+    // Trend percentages (month-over-month)
+    private Double incomeTrend;
+    private Double expenseTrend;
+    private Double balanceTrend;
 }

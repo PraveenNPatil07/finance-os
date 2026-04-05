@@ -8,13 +8,19 @@ const StatValue = ({ value }) => {
 };
 
 export default function SummaryCards({ data }) {
+  const formatTrend = (trend) => {
+    if (trend == null) return 'No data';
+    const sign = trend > 0 ? '+' : '';
+    return `${sign}${trend.toFixed(1)}% from last month`;
+  };
+
   const cards = [
     {
       title: 'Current Balance',
       value: data.netBalance || 0,
       icon: Activity,
-      trend: '+12.5% from last month',
-      trendUp: true,
+      trend: formatTrend(data.balanceTrend),
+      trendUp: data.balanceTrend >= 0,
       accent: 'brand',
       iconTheme: 'text-brand bg-brand-dim',
     },
@@ -22,8 +28,8 @@ export default function SummaryCards({ data }) {
       title: 'Total Income',
       value: data.totalIncome || 0,
       icon: Wallet,
-      trend: '+8.2% from last month',
-      trendUp: true,
+      trend: formatTrend(data.incomeTrend),
+      trendUp: data.incomeTrend >= 0,
       accent: 'income',
       iconTheme: 'text-income bg-income-dim',
     },
@@ -31,16 +37,16 @@ export default function SummaryCards({ data }) {
       title: 'Total Expenses',
       value: data.totalExpenses || 0,
       icon: CreditCard,
-      trend: '-4.1% from last month',
-      trendUp: false,
+      trend: formatTrend(data.expenseTrend),
+      trendUp: data.expenseTrend <= 0, // Lower expenses is usually good
       accent: 'expense',
       iconTheme: 'text-expense bg-expense-dim',
     },
     {
       title: 'Monthly Savings',
-      value: (data.totalIncome || 0) - (data.totalExpenses || 0),
+      value: data.thisMonthNet || 0,
       icon: PiggyBank,
-      trend: 'All time total',
+      trend: 'Current month net',
       trendUp: null,
       accent: 'warning',
       iconTheme: 'text-warning bg-warning/10',
